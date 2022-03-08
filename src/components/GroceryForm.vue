@@ -13,12 +13,14 @@
         placeholder="Agregar un producto a la lista"
       />
     </div>
+    <button type="button" class="btn" @click="saveList">Guardar Lista</button>
   </form>
 </template>
 
 <script lang="ts">
 import { defineComponent, ref } from "vue";
 import { useStore } from "vuex";
+import { IGroceries, ISavedList } from "../vuex/modules/grocesy/interface";
 import { StateInterface } from "../vuex/store";
 
 export default defineComponent({
@@ -28,15 +30,47 @@ export default defineComponent({
 
     const handleAddNewproduct = (product: string) => {
       if (product.trim()) {
-        store.commit("groceryModule/addNewGrocery", product);
+        const productLowerCase = product.toLowerCase();
+        const CapitalLetter = productLowerCase.charAt(0).toUpperCase();
+        const productPharse = productLowerCase.replace(
+          productLowerCase.charAt(0),
+          CapitalLetter
+        );
+        console.log(productPharse);
+        const newGrocery: IGroceries = {
+          name: productPharse,
+          checked: false,
+        };
+        store.commit("groceryModule/addNewGrocery", newGrocery);
         newProduct.value = "";
 
         return;
       }
     };
+    const saveList = () => {
+      console.log("first");
+      if (store.state.groceryModule.grocesryData.groceries.length === 0) {
+        alert("No hay nada en la lista que guardar!");
+        return;
+      }
+      const newList: ISavedList = {
+        date: Date.now().toString(),
+        dataList: store.state.groceryModule.grocesryData.groceries,
+      };
+      localStorage.setItem(
+        "saved-list",
+        JSON.stringify([
+          ...store.state.groceryModule.grocesryData.savedList,
+          newList,
+        ])
+      );
+      store.commit("groceryModule/saveList", newList);
+      alert("Lista guardada");
+    };
     return {
       newProduct,
       handleAddNewproduct,
+      saveList,
     };
   },
 });
@@ -46,6 +80,7 @@ export default defineComponent({
 .form_container {
   width: 80%;
   padding: 20px;
+  position: relative;
 }
 .field_container {
   width: 100%;
@@ -69,5 +104,22 @@ input {
   border-bottom: solid 1px black;
   outline: none;
   font-size: 20px;
+}
+.btn {
+  border: none;
+  font-size: 17px;
+  padding: 10px;
+  border-radius: 6px;
+  background: rgb(255, 174, 0);
+  color: #ffffff;
+  font-weight: bold;
+  position: absolute;
+  right: 0;
+  bottom: -21px;
+  cursor: pointer;
+  transition: all 0.4s;
+}
+.btn:hover {
+  transform: scale(1.1);
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <ul class="list_container">
-    <li v-for:="grocery in groceryList">- {{ grocery }}</li>
+    <li v-for:="grocery in groceryList">- {{ grocery.name }}</li>
   </ul>
 </template>
 
@@ -30,7 +30,7 @@ export default defineComponent({
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
-  overflow-y: scroll;
+  overflow-y: auto;
   gap: 1.5rem;
 }
 .list_container li {

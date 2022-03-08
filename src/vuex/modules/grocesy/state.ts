@@ -4,6 +4,7 @@ export const state = (): IGroceryState => {
   return {
     grocesryData: {
       groceries: [],
+      savedList: [],
     },
   };
 };
