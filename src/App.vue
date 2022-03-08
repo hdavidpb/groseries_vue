@@ -29,4 +29,12 @@ body{
   background: #ffffff;
 
 }
+
+@media (max-width:600px){
+  .app_container{
+    width: 100%;
+    
+  }
+ 
+}
 </style>
