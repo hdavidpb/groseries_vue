@@ -13,6 +13,13 @@ const mutation: MutationTree<IGroceryState> = {
   saveList({ grocesryData }, newList: ISavedList) {
     grocesryData.savedList = [...grocesryData.savedList, newList];
   },
+  changeGroseryChecked({ grocesryData }, index: number) {
+    grocesryData.groceries.forEach((grosery, i) => {
+      if (i === index) {
+        grosery.checked = !grosery.checked;
+      }
+    });
+  },
 };
 
 export default mutation;
